@@ -6,8 +6,11 @@ const serverBlogHandle = (req, res) => {
     const id = req.query.id;
     // 获取博客列表
     if (method === 'GET' && req.path === '/api/blog/list') {
-        const listData = getList(req.query.author, req.query.keyword)
-        return new SuccessModel(listData);
+        const { author = '', keyword = '' } = req.query;
+        const result = getList(author, keyword);
+        return result.then(datalist => {
+            return new SuccessModel(datalist);
+        })
     }
 
     // 获取博客详情
